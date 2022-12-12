@@ -14,3 +14,9 @@ A los high order components se les suele llamar withXXXX
 
 Se crea un componente que devuelve el renderizado del componente que queremos, pero con más funcionalidades.  
 Se debe intentar que los high order components reciban sólamente el compomonente que deben mejorar.
+
+## Utilizar render
+
+(https://reactjs.org/docs/render-props.html)
+
+##
