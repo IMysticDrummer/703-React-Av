@@ -89,3 +89,7 @@ export default function configureStore() {
 ```
 
 Aunque lo mejor es utilizar el paquete en el proyecto.
+
+## combineReducers
+
+Sirve para partir el reducer principal en trozos más pequeños, para tratarlos y recombinarlos para pasar luego una sola función.
