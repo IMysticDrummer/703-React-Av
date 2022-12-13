@@ -93,3 +93,13 @@ Aunque lo mejor es utilizar el paquete en el proyecto.
 ## combineReducers
 
 Sirve para partir el reducer principal en trozos más pequeños, para tratarlos y recombinarlos para pasar luego una sola función.
+Luego podemos combinarlos con la función combineReducers de Redux, pasando un objeto con las funciones a combinar.
+
+# React-Redux
+
+Es el paquete que une react con redux, de forma sencialla y "ocultando" el store. Además hace las suscripciones y gestiona de forma fácil el renderizado.  
+Instalamos react-redux: `npm i --save react-redux`
+
+## Uso
+
+Importamos en el index el `Provider` de react-redux, envolvemos la aplicación y le pasamos el store.

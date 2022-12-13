@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
+// import { BrowserRouter as Router } from 'react-router-dom';
+// import { Provider } from 'react-redux';
+import Root from './Root';
 
 import './index.css';
 import App from './App';
@@ -14,16 +16,18 @@ import configureStore from './store';
 const accessToken = storage.get('auth');
 setAuthorizationHeader(accessToken);
 
-const store = configureStore();
-window.store = store;
+//Pasamos un preloadedState. En este caso el estado de autentificación
+const store = configureStore({ auth: !!accessToken });
+//Con las devtools no hace falta tener esto para hacer dispatch manuales
+//window.store = store;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Router>
+    <Root store={store}>
       <AuthContextProvider isInitiallyLogged={!!accessToken}>
         <App />
       </AuthContextProvider>
-    </Router>
+    </Root>
   </React.StrictMode>
 );

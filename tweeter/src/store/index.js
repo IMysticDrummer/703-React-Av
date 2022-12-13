@@ -18,9 +18,12 @@ import { composeWithDevTools } from '@redux-devtools/extension';
 import * as reducers from './reducers'; //Esta importación devuelve un objeto con todas las funciones importadas
 
 const reducer = combineReducers(reducers);
-export default function configureStore() {
+// Añadimos un estado de precarga que inicialice es store. Esto es diferente de tener un estado por defecto, en el caso que no enviemos nada
+//La asignación la hace internamente.
+export default function configureStore(preloadedState) {
   const store = createStore(
     reducer,
+    preloadedState,
     composeWithDevTools()
     //applyMiddleware(...middleware)
     // other store enhancers if any
