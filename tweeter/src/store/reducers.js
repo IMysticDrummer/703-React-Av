@@ -64,9 +64,10 @@ export function tweets(state = defaulState.tweets, action) {
   }
 }
 
-export default function reducer(state = defaulState, action) {
-  return {
-    auth: auth(state.auth, action),
-    tweets: tweets(state.tweets, action),
-  };
-}
+//Comentamos porque no lo necesitaríamos si utilizamos combineReducers
+// export default function reducer(state = defaulState, action) {
+//   return {
+//     auth: auth(state.auth, action),
+//     tweets: tweets(state.tweets, action),
+//   };
+// }
