@@ -9,9 +9,13 @@ import { setAuthorizationHeader } from './api/client';
 import { AuthContextProvider } from './components/auth/context';
 
 //import './store-poc';
+import configureStore from './store';
 
 const accessToken = storage.get('auth');
 setAuthorizationHeader(accessToken);
+
+const store = configureStore();
+window.store = store;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

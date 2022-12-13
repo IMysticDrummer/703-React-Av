@@ -71,3 +71,21 @@ Siempre tienen que ser objetos que representan una intenciòn de cambiar el esta
     text: 'Build my first Redux app',
   };
   ```
+
+https://github.com/redux-utilities/flux-standard-action
+
+Para ver las redux devtools en los navegadores, en el sitio donde creamos el store, tenemos que añadir un segundo parámetro. Todo según se indica en:  
+https://github.com/reduxjs/redux-devtools
+
+```javascript
+export default function configureStore() {
+  const store = createStore(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
+
+  return store;
+}
+```
+
+Aunque lo mejor es utilizar el paquete en el proyecto.
