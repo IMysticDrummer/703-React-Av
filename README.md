@@ -103,3 +103,31 @@ Instalamos react-redux: `npm i --save react-redux`
 ## Uso
 
 Importamos en el index el `Provider` de react-redux, envolvemos la aplicación y le pasamos el store.
+
+## Conexión de los componentes al almacén
+
+### Con hooks (recomendado)
+
+- **useSelector**:
+  - Permite leer datos del store.
+  - `const result=useSelector(selection)`
+  - A la función le pasamos el store, utilizamos una función para sacar el dato que necesitemos. Por ejemplo:  
+    `const isLogged = useSelector(state=>state.auth);`  
+    Se puede crear un fichero (selectors.js) y meter esas funciones que devuelven el estado para que lo tengamos todo en el mismo sitio si tenemos que realizar modificaciones más adelante en nuestro modelo o código:  
+    `export const getIsLogged = (state) => state.auth;`  
+    `const isLogged = useSelector(getIsLogged);`
+- **useDispatch**
+
+  - Devuelve la referencia al dispatch del store para disparar acciones.
+
+- **useStore**
+
+### Con connect
+
+Connect es un high order component, que le pasamos un par de parámetros para configurar y ligar el componente a Redux.
+
+Los parámetros son dos funciones:
+
+- La primera trae los datos del estado (mapStateToProps)
+- La segunda crea funciones que despachan acciones (mapDispatchToProps)
+- Luego aosciamos al compnnente `connect().Component()`
