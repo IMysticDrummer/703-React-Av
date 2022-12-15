@@ -6,6 +6,8 @@ import { useAuth } from './context';
 import { login } from './service';
 
 import './LoginPage.css';
+import { useDispatch } from 'react-redux';
+import { authLogin } from '../../store/actions';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -14,20 +16,23 @@ const LoginPage = () => {
   const [isFetching, setIsFetching] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { handleLogin } = useAuth();
+  //Con Redux, ya no hace falta
+  //const { handleLogin } = useAuth();
+  const dispatch = useDispatch();
 
-  const handleChangeUsername = event => setUsername(event.target.value);
-  const handleChangePassword = event => setPassword(event.target.value);
+  const handleChangeUsername = (event) => setUsername(event.target.value);
+  const handleChangePassword = (event) => setPassword(event.target.value);
   const resetError = () => setError(null);
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       resetError();
       setIsFetching(true);
       await login({ username, password });
-      handleLogin();
+      //handleLogin();
+      dispatch(authLogin());
       const to = location.state?.from?.pathname || '/';
 
       // const to =
@@ -50,29 +55,29 @@ const LoginPage = () => {
   }, [username, password, isFetching]);
 
   return (
-    <div className="loginPage">
-      <h1 className="loginPage-title">Log in to Twitter</h1>
+    <div className='loginPage'>
+      <h1 className='loginPage-title'>Log in to Twitter</h1>
       <form onSubmit={handleSubmit}>
         <FormField
-          type="text"
-          name="username"
-          label="phone, email or username"
-          className="loginForm-field"
+          type='text'
+          name='username'
+          label='phone, email or username'
+          className='loginForm-field'
           onChange={handleChangeUsername}
           value={username}
         />
         <FormField
-          type="password"
-          name="password"
-          label="password"
-          className="loginForm-field"
+          type='password'
+          name='password'
+          label='password'
+          className='loginForm-field'
           onChange={handleChangePassword}
           value={password}
         />
         <Button
-          type="submit"
-          variant="primary"
-          className="loginForm-submit"
+          type='submit'
+          variant='primary'
+          className='loginForm-submit'
           disabled={!isButtonEnabled}
         >
           Log in
@@ -98,7 +103,10 @@ const LoginPage = () => {
         </select> */}
       </form>
       {error && (
-        <div onClick={resetError} className="loginPage-error">
+        <div
+          onClick={resetError}
+          className='loginPage-error'
+        >
           {error.message}
         </div>
       )}

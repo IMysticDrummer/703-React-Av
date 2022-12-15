@@ -8,7 +8,6 @@ import './index.css';
 import App from './App';
 import storage from './utils/storage';
 import { setAuthorizationHeader } from './api/client';
-import { AuthContextProvider } from './components/auth/context';
 
 //import './store-poc';
 import configureStore from './store';
@@ -22,12 +21,13 @@ const store = configureStore({ auth: !!accessToken });
 //window.store = store;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+//Redux... eliminamos todo lo relacionado al AuthContextProvider
+//import { AuthContextProvider } from './components/auth/context';
+//<AuthContextProvider isInitiallyLogged={!!accessToken}></AuthContextProvider>
 root.render(
   <React.StrictMode>
     <Root store={store}>
-      <AuthContextProvider isInitiallyLogged={!!accessToken}>
-        <App />
-      </AuthContextProvider>
+      <App />
     </Root>
   </React.StrictMode>
 );
