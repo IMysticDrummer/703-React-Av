@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+//import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Page from '../layout/Page';
 //Cambios en importaciones para tratr el tweetdetail con Redux
-import { getTweetDetail } from './service';
+//import { getTweetDetail } from './service';
 import { getTweet } from '../../store/selectors';
 import { useSelector } from 'react-redux';
 
@@ -14,7 +15,9 @@ const TweetPage = (props) => {
   const unmounteRef = useRef(false);
 
   //Uso de redux para tratar los tweets
-  const tweet = useSelector((state) => getTweet(state, tweetId));
+  //const tweet = useSelector((state) => getTweet(state, tweetId));
+  //Cambio para usar la nueva función getTweet para aislar el parámetro de estado
+  const tweet = useSelector(getTweet(tweetId));
 
   // useEffect(() => {
   //   getTweetDetail(tweetId)
