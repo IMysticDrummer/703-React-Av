@@ -1,3 +1,4 @@
+import { login } from '../components/auth/service';
 import {
   AUTH_LOGIN,
   AUTH_LOGOUT,
@@ -10,9 +11,20 @@ import {
 } from './types';
 
 //Creamos los actions creators. Uno por cada acción
-export const authLogin = () => ({
-  type: AUTH_LOGIN,
-});
+//Transformación para convertir esto en un login a través de middleware
+export const authLogin = (credentials) => {
+  return async function (dispatch, getState) {
+    //Lógica trasladada desde loginPage
+    try {
+      dispatch(authLoginRequest());
+      await login(credentials);
+      dispatch(authLoginSuccess());
+    } catch (error) {
+      dispatch(authLoginFailure(error));
+      throw error;
+    }
+  };
+};
 export const authLogout = () => ({
   type: AUTH_LOGOUT,
 });

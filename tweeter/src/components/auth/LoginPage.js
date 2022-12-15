@@ -3,15 +3,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
 import FormField from '../common/FormField';
 //import { useAuth } from './context';
-import { login } from './service';
+//import { login } from './service';
 
 import './LoginPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   authLogin,
-  authLoginFailure,
-  authLoginRequest,
-  authLoginSuccess,
+  //  authLoginFailure,
+  //  authLoginRequest,
+  //  authLoginSuccess,
   uiResetError,
 } from '../../store/actions';
 import { getUi } from '../../store/selectors';
@@ -37,14 +37,19 @@ const LoginPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    dispatch(authLoginRequest());
+    dispatch(authLogin({ username, password })).then(() => {
+      const to = location.state?.from?.pathname || '/';
+      navigate(to, { replace: true });
+    });
+    //dispatch(authLoginRequest());
+
+    /*
     try {
       //resetError();
       //setIsFetching(true);
       await login({ username, password });
       //handleLogin();
-      dispatch(authLoginSuccess());
-      const to = location.state?.from?.pathname || '/';
+      //dispatch(authLoginSuccess());
 
       // const to =
       //   (location.state &&
@@ -52,14 +57,13 @@ const LoginPage = () => {
       //     location.state.from.pathname) ||
       //   '/';
 
-      navigate(to, { replace: true });
     } catch (error) {
       //setError(error);
       //setIsFetching(false);
       dispatch(authLoginFailure(error));
     }
+    */
   };
-
   console.log('render ');
   const isButtonEnabled = useMemo(() => {
     console.log('calculating');

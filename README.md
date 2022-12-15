@@ -131,3 +131,9 @@ Los parámetros son dos funciones:
 - La primera trae los datos del estado (mapStateToProps)
 - La segunda crea funciones que despachan acciones (mapDispatchToProps)
 - Luego aosciamos al compnnente `connect().Component()`
+
+# Middlewares
+
+Usar redux-thunk: `npm i redux-thunk`
+Importar `applyMiddleware` en el store.  
+Importamos thunk de redux-thunk: `import thunk from 'redux-thunk'`
