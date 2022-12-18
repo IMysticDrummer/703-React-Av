@@ -239,6 +239,15 @@ Los parámetros son dos funciones:
 
 # Middlewares
 
+Vamos a utilizar un middleware que nos va a permitir pasar no solo objetos, sino también funciones a redux.  
+Esto tendrá dos utilidades:
+
+1. Podremos pasar toda la lógica asíncrona de obtención de datos, desde los componentes a redux
+2. Aumenta la capacidad de redux de recibir, no solo objetos, sino también funciones.
+
+El middleware más utilizado es **thunk**. Thunk va a interceptar todos los _dispatch_. Si el dato introducido es un objeto, lo pasará a redux directamente. Si es una función, la ejecuta el propio thunk.  
+Thunk tiene acceso a getState y a dispatch, para poder operar con redux.
+
 Usar redux-thunk: `npm i redux-thunk`
 Importar `applyMiddleware` en el store.  
 Importamos thunk de redux-thunk: `import thunk from 'redux-thunk'`
