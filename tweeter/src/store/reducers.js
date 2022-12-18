@@ -129,7 +129,7 @@ export function ui(state = defaultState.ui, action) {
   if (/_SUCCESS$/.test(action.type)) {
     return {
       error: null,
-      isLoading: true,
+      isLoading: false,
     };
   }
   if (action.type === UI_RESET_ERROR) {
