@@ -145,6 +145,20 @@ export const authLoginFailure = (error) => ({
   }
   ```
 
+5. Uso del store:
+
+- Utilizaremos `useSelector` para comprobar el estado de un elemento del store de redux. Para ello hay que pasarle una función. Por ejemplo:
+
+```javascript
+const isLogged = useSelector((state) => state.auth);
+```
+
+    - Es una **buena práctica** cuando tenemos que acceder en varios sitios al mismo elemento del store, generar un archivo aparte (`selectors.js`), donde creemos funciones que nos devuelvan directamente el elemento que queremos, sin tener que escribirlo en todos los lados. De esa manera, cualquier cambio posterior que queramos hacer será mucho más centralizado.
+
+    ```javascript
+    export const getIsLogged = (state) => state.auth;
+    ```
+
 ## ACCIONES
 
 Siempre tienen que ser objetos que representan una intenciòn de cambiar el estado.

@@ -85,28 +85,59 @@ export function tweets(state = defaultState.tweets, action) {
 // }
 
 export function ui(state = defaultState.ui, action) {
-  switch (action.type) {
-    case AUTH_LOGIN_REQUEST:
-      return {
-        error: null,
-        isLoading: true,
-      };
-    case AUTH_LOGIN_SUCCESS:
-      return {
-        error: null,
-        isLoading: false,
-      };
-    case AUTH_LOGIN_FAILURE:
-      return {
-        isLoading: false,
-        error: action.payload,
-      };
-    case UI_RESET_ERROR:
-      return {
-        ...state,
-        error: null,
-      };
-    default:
-      return state;
+  // switch (action.type) {
+  //   case AUTH_LOGIN_REQUEST:
+  //     return {
+  //       error: null,
+  //       isLoading: true,
+  //     };
+  //   case AUTH_LOGIN_SUCCESS:
+  //     return {
+  //       error: null,
+  //       isLoading: false,
+  //     };
+  //   case AUTH_LOGIN_FAILURE:
+  //     return {
+  //       isLoading: false,
+  //       error: action.payload,
+  //     };
+  //   case UI_RESET_ERROR:
+  //     return {
+  //       ...state,
+  //       error: null,
+  //     };
+  //      default:
+  //        return state;
+
+  //Tratamiento con agrupaciones de tipos de acción, y usando expresiones regulares
+  //Siempre que haya un error (en las acciones declaramos un campo error al estado)
+  if (action.error) {
+    return {
+      isLoading: false,
+      error: action.payload,
+    };
   }
+
+  //Toda acción que acabe en REQUEST con expresiones regulares
+  if (/_REQUEST$/.test(action.type)) {
+    return {
+      error: null,
+      isLoading: true,
+    };
+  }
+  //Toda acción que acabe en SUCCESS con expresiones regulares
+  if (/_SUCCESS$/.test(action.type)) {
+    return {
+      error: null,
+      isLoading: true,
+    };
+  }
+  if (action.type === UI_RESET_ERROR) {
+    return {
+      ...state,
+      error: null,
+    };
+  }
+
+  return state;
 }
