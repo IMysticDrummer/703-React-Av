@@ -54,6 +54,97 @@ Redux se basa en tres principios básicos:
 - **Los cambios se realizan con funciones puras**: Los _reducers_ especifican cómo cambia el estado en respuesta a las acciones.
   - Una función pura es aquella que depende de sus parámetros de entrada, que dichos parámetros no pueden ser modificados, y que ante los mismos parámetros de entrada, siempre devuelve el mismo resultado.
 
+## Pasos para crear un store
+
+1. En un archivo indicar los tipos (types.js) de acción a realizar en el store:
+
+- Las acciones se declaran como constantes en mayúsculas, y su valor es la misma acción en texto. Ejemplo:  
+  `export const AUTH_LOGIN_REQUEST = 'AUTH_LOGIN_REQUEST';`
+
+2. En otro archivo se declaran las acciones. Estos son funciones que retornan objetos con type (la acción a realizar según el archivo types) y, si es necesario, payload. El payload es el valor que queremos pasar al estado del store. Ejemplos:
+
+```javascript
+export const tweetsLoaded = (tweets) => ({
+  type: TWEETS_LOADED,
+  payload: tweets,
+});
+```
+
+- También se pueden pasar acciones que disparen un error, con la siguiente configuración:
+
+```javascript
+export const authLoginFailure = (error) => ({
+  type: AUTH_LOGIN_FAILURE,
+  payload: error,
+  error: true,
+});
+```
+
+3. El siguiente paso es declarar los _reducers_, en otro archivo, que son las acciones de cambio del store, según la acción que se haya indicado. En este archivo se declara:
+
+- El estado por defecto, para asegurar un estado mínimo en el store:
+  ```javascript
+  const defaultState = {
+    auth: false,
+    tweets: [],
+    ui: {
+      isLoading: false,
+      error: null,
+    },
+  };
+  ```
+- Los reducer para cada tipo de elemento del store, que contienen los pasos a realizar según la acción recibida. Por ejemplo:
+  ```javascript
+  export function auth(state = defaultState.auth, action) {
+    switch (action.type) {
+      case AUTH_LOGIN_SUCCESS:
+        return true;
+      case AUTH_LOGOUT:
+        return false;
+      default:
+        return state;
+    }
+  }
+  ```
+
+4. Como **buena práctica** tendremos un archivo _index.js_ que se encargará de:
+
+- Combinar los diferentes reducers, con _`combineReducers`_ de Redux
+- Crear el store con _`createStore`_
+
+  - Es este _createStore_ generaremos y devolveremos el store, y combinaremos los reducers para su manejo, el estado predefinido (_preloadedState_), aplicaremos las herramientas para desarrollo redux-devtools, y los middlewares con _`thunk`_
+
+  ```javascript
+  import { createStore, combineReducers, applyMiddleware } from 'redux';
+  import { composeWithDevTools } from '@redux-devtools/extension';
+  // import thunk from 'redux-thunk';
+
+  // import { auth, tweets } from './reducers';
+  import * as reducers from './reducers';
+
+  // const reducer = combineReducers({ auth, tweets });
+  const reducer = combineReducers(reducers);
+
+  const thunk = (store) => (next) => (action) => {
+    if (typeof action === 'function') {
+      return action(store.dispatch, store.getState);
+    }
+    return next(action);
+  };
+
+  const middlewares = [thunk];
+
+  export default function configureStore(preloadedState) {
+    const store = createStore(
+      reducer,
+      preloadedState,
+      composeWithDevTools(applyMiddleware(...middlewares))
+    );
+
+    return store;
+  }
+  ```
+
 ## ACCIONES
 
 Siempre tienen que ser objetos que representan una intenciòn de cambiar el estado.
