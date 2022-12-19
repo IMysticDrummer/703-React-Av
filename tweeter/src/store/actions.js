@@ -49,7 +49,7 @@ export const authLogin = (credentials) => {
     }
   };
 };
-export const authLogout = () => ({
+export const authLogoutSuccess = () => ({
   type: AUTH_LOGOUT,
 });
 //Se podría crear con una sola función y un solo type, pero es mejor ser descriptivo con las acciones
@@ -57,6 +57,13 @@ export const authLogout = () => ({
 //   type: AUTH,
 //   payload: auth
 // });
+
+export const authLogout = () => {
+  return async function (dispatch, getState, { api }) {
+    await api.auth.logout();
+    dispatch(authLogoutSuccess());
+  };
+};
 
 export const teewtsLoadedRequest = () => ({
   type: TWEETS_LOADED_REQUEST,

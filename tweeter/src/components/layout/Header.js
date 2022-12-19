@@ -8,7 +8,7 @@ import './Header.css';
 import { logout } from '../auth/service';
 
 //Con redux ya no hace falta
-import { useAuth } from '../auth/context';
+//import { useAuth } from '../auth/context';
 import { useSelector } from 'react-redux';
 import { getIsLogged } from '../../store/selectors';
 
@@ -23,7 +23,7 @@ const Header = ({ className }) => {
   const dispatch = useDispatch();
 
   const handleLogoutClick = async () => {
-    await logout();
+    //await logout();
     //handleLogout();
     dispatch(authLogout());
   };
@@ -52,15 +52,13 @@ const Header = ({ className }) => {
           to='/tweets'
           // className={({ isActive }) => (isActive ? 'selected' : '')}
           // style={({ isActive }) => (isActive ? { color: 'green' } : null)}
-          end
-        >
+          end>
           See all tweets
         </NavLink>
         {isLogged ? (
           <Button
             className='header-button'
-            onClick={handleLogoutClick}
-          >
+            onClick={handleLogoutClick}>
             Logout
           </Button>
         ) : (
@@ -68,8 +66,7 @@ const Header = ({ className }) => {
             as={Link}
             to='/login'
             variant='primary'
-            className='header-button'
-          >
+            className='header-button'>
             Login
           </Button>
         )}
