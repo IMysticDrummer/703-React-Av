@@ -1,6 +1,6 @@
 //Ya no hace falta porque lo recibimos a través de thunk
 //import { login } from '../components/auth/service';
-import { areTweetsLoaded } from './selectors';
+import { areTweetsLoaded, getTweet } from './selectors';
 import {
   //AUTH_LOGIN,
   AUTH_LOGOUT,
@@ -12,6 +12,9 @@ import {
   TWEETS_LOADED_REQUEST,
   TWEETS_LOADED_SUCCESS,
   TWEETS_LOADED_FAILURE,
+  TWEET_LOADED_REQUEST,
+  TWEET_LOADED_SUCCESS,
+  TWEET_LOADED_FAILURE,
 } from './types';
 
 //Creamos los actions creators. Uno por cada acción
@@ -64,6 +67,36 @@ export const tweetsLoad = () => {
       dispatch(teewtsLoadedSuccess(tweets));
     } catch (error) {
       dispatch(teewtsLoadedFailure(error));
+      throw error;
+    }
+  };
+};
+
+export const teewtLoadedRequest = () => ({
+  type: TWEET_LOADED_REQUEST,
+});
+export const teewtLoadedSuccess = (tweet) => ({
+  type: TWEET_LOADED_SUCCESS,
+  payload: tweet,
+});
+export const teewtLoadedFailure = (error) => ({
+  type: TWEET_LOADED_FAILURE,
+  payload: error,
+  error: true,
+});
+
+export const tweetLoad = (tweetId) => {
+  return async function (dispatch, getState, { api }) {
+    const isLoaded = getTweet(tweetId)(getState());
+    if (isLoaded) {
+      return;
+    }
+    try {
+      dispatch(teewtLoadedRequest());
+      const tweet = await api.tweets.getTweetDetail(tweetId);
+      dispatch(teewtLoadedSuccess(tweet));
+    } catch (error) {
+      dispatch(teewtLoadedFailure(error));
       throw error;
     }
   };
