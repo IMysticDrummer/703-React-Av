@@ -5,7 +5,7 @@ import Button from '../common/Button';
 
 import './NewTweetPage.css';
 import { useEffect, useRef, useState } from 'react';
-import { createTweet } from './service';
+//import { createTweet } from './service';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { tweetCreate } from '../../store/actions';
@@ -39,8 +39,10 @@ const NewTweetPage = () => {
     try {
       //const createdTweet = await createTweet({ content });
       //necesitamos el await porque sino, nos devolverá una promesa en vez del tweet
-      const { id } = await dispatch(tweetCreate({ content }));
-      const createdTweet = await applyMiddleware.tweets.getTweetDetail(id);
+      //Con la navegación desde redux ya no hace falta
+      //const { id } = await dispatch(tweetCreate({ content }));
+      //const createdTweet = await applyMiddleware.tweets.getTweetDetail(id);
+      const createdTweet = await dispatch(tweetCreate({ content }));
       navigate(`/tweets/${createdTweet.id}`);
     } catch (error) {
       if (error.status === 401) {

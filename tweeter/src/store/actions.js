@@ -146,7 +146,8 @@ export const tweetCreate = (tweet) => {
   return async function (dispatch, getState, { api }) {
     try {
       dispatch(tweetCreatedRequest());
-      const createdTweet = await api.tweets.createTweet(tweet);
+      const { id } = await api.tweets.createTweet(tweet);
+      const createdTweet = await api.tweets.getTweetDetail(id);
       dispatch(tweetCreatedSuccess(createdTweet));
       //devolvemos el tweet para poder utilizarlo fuera
       return createdTweet;

@@ -251,3 +251,6 @@ Thunk tiene acceso a getState y a dispatch, para poder operar con redux.
 Usar redux-thunk: `npm i redux-thunk`
 Importar `applyMiddleware` en el store.  
 Importamos thunk de redux-thunk: `import thunk from 'redux-thunk'`
+
+Artículo interesante sobe cómo se crean e implementan los middlewares:  
+https://redux.js.org/understanding/history-and-design/middleware#understanding-middleware
