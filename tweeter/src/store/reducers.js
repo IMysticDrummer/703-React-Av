@@ -5,12 +5,13 @@
 //}
 
 import {
-  AUTH_LOGIN,
+  //AUTH_LOGIN,
   AUTH_LOGOUT,
   AUTH_LOGIN_SUCCESS,
-  AUTH_LOGIN_REQUEST,
-  AUTH_LOGIN_FAILURE,
-  TWEETS_LOADED,
+  //AUTH_LOGIN_REQUEST,
+  //AUTH_LOGIN_FAILURE,
+  //TWEETS_LOADED,
+  TWEETS_LOADED_SUCCESS,
   UI_RESET_ERROR,
 } from './types';
 
@@ -42,7 +43,11 @@ import {
 //Definimos nuestros reducers
 const defaultState = {
   auth: false,
-  tweets: [],
+  //tweets: [],
+  tweets: {
+    data: [],
+    areLoaded: false,
+  },
   ui: {
     error: null,
     isLoading: false,
@@ -52,7 +57,8 @@ const defaultState = {
 //Reducer de auth que sólo se encarga del estado de auth
 export function auth(state = defaultState.auth, action) {
   switch (action.type) {
-    case AUTH_LOGIN:
+    //case AUTH_LOGIN:
+    case AUTH_LOGIN_SUCCESS:
       //Solo devolvemos el dato que necesitamos
       return true;
     case AUTH_LOGOUT:
@@ -66,14 +72,22 @@ export function auth(state = defaultState.auth, action) {
 
 //Reducer de auth que sólo se encarga del estado de auth
 export function tweets(state = defaultState.tweets, action) {
-  switch (action.type) {
-    case TWEETS_LOADED:
-      //Solo devolvemos el dato que necesitamos
-      return action.payload;
-    default:
-      //Cualquier acción que no sean las anteriores no van a tocar el estado
-      return state;
+  /*if (action.type)
+    switch (action.type) {
+      // case TWEETS_LOADED:
+      //   //Solo devolvemos el dato que necesitamos
+      //   return action.payload;
+      case TWEETS_LOADED_SUCCESS:
+        return action.payload;
+      default:
+        //Cualquier acción que no sean las anteriores no van a tocar el estado
+        return state;
+    }
+    */
+  if (action.type === TWEETS_LOADED_SUCCESS) {
+    return { areLoaded: true, data: action.payload };
   }
+  return state;
 }
 
 //Comentamos porque no lo necesitaríamos si utilizamos combineReducers
