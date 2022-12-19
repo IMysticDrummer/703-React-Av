@@ -1,4 +1,5 @@
-import { login } from '../components/auth/service';
+//Ya no hace falta porque lo recibimos a través de thunk
+//import { login } from '../components/auth/service';
 import {
   AUTH_LOGIN,
   AUTH_LOGOUT,
@@ -13,11 +14,13 @@ import {
 //Creamos los actions creators. Uno por cada acción
 //Transformación para convertir esto en un login a través de middleware
 export const authLogin = (credentials) => {
-  return async function (dispatch, getState) {
+  return async function (dispatch, getState, { api }) {
     //Lógica trasladada desde loginPage
     try {
       dispatch(authLoginRequest());
-      await login(credentials);
+      //Anulamos lo siguiente ya que ahora lo recibimos por extra arguments a través del thunk
+      //await login(credentials);
+      await api.auth.login(credentials);
       dispatch(authLoginSuccess());
     } catch (error) {
       dispatch(authLoginFailure(error));
