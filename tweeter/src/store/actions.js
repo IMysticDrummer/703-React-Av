@@ -15,7 +15,22 @@ import {
   TWEET_LOADED_REQUEST,
   TWEET_LOADED_SUCCESS,
   TWEET_LOADED_FAILURE,
+  TWEET_CREATED_REQUEST,
+  TWEET_CREATED_SUCCESS,
+  TWEET_CREATED_FAILURE,
 } from './types';
+
+export const authLoginSuccess = () => ({
+  type: AUTH_LOGIN_SUCCESS,
+});
+export const authLoginRequest = () => ({
+  type: AUTH_LOGIN_REQUEST,
+});
+export const authLoginFailure = (error) => ({
+  type: AUTH_LOGIN_FAILURE,
+  payload: error,
+  error: true,
+});
 
 //Creamos los actions creators. Uno por cada acción
 //Transformación para convertir esto en un login a través de middleware
@@ -107,17 +122,33 @@ export const tweetLoad = (tweetId) => {
 //   payload: tweets,
 // });
 
-export const authLoginSuccess = () => ({
-  type: AUTH_LOGIN_SUCCESS,
+export const tweetCreatedRequest = () => ({
+  type: TWEET_CREATED_REQUEST,
 });
-export const authLoginRequest = () => ({
-  type: AUTH_LOGIN_REQUEST,
+export const tweetCreatedSuccess = (tweet) => ({
+  type: TWEET_CREATED_SUCCESS,
+  payload: tweet,
 });
-export const authLoginFailure = (error) => ({
-  type: AUTH_LOGIN_FAILURE,
+export const tweetCreatedFailure = (error) => ({
+  type: TWEET_CREATED_FAILURE,
   payload: error,
   error: true,
 });
+
+export const tweetCreate = (tweet) => {
+  return async function (dispatch, getState, { api }) {
+    try {
+      dispatch(tweetCreatedRequest());
+      const createdTweet = await api.tweets.createTweet(tweet);
+      dispatch(tweetCreatedSuccess(createdTweet));
+      //devolvemos el tweet para poder utilizarlo fuera
+      return createdTweet;
+    } catch (error) {
+      dispatch(tweetCreatedFailure(error));
+      throw error;
+    }
+  };
+};
 
 export const uiResetError = () => ({
   type: UI_RESET_ERROR,

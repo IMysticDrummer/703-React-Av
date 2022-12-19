@@ -14,6 +14,7 @@ import {
   TWEETS_LOADED_SUCCESS,
   TWEET_LOADED_SUCCESS,
   UI_RESET_ERROR,
+  TWEET_CREATED_SUCCESS,
 } from './types';
 
 //ANTES DE combineReducer
@@ -90,6 +91,9 @@ export function tweets(state = defaultState.tweets, action) {
   }
   if (action.type === TWEET_LOADED_SUCCESS) {
     return { ...state, data: [action.payload] };
+  }
+  if (action.type === TWEET_CREATED_SUCCESS) {
+    return { ...state, data: [action.payload, ...state.data] };
   }
   return state;
 }
