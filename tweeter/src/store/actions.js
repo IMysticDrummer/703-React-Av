@@ -123,9 +123,10 @@ export const tweetLoad = (tweetId) => {
       dispatch(teewtLoadedFailure(error));
       //Cambios si redireccionamos desde aquí
       //throw error;
-      if (error.status === 404) {
-        router.navigate('/404');
-      }
+      //Ya no hace falta porque tratamos las redirecciones de error con middleware
+      // if (error.status === 404) {
+      //   router.navigate('/404');
+      // }
     }
   };
 };
@@ -163,9 +164,10 @@ export const tweetCreate = (tweet) => {
       dispatch(tweetCreatedFailure(error));
       //Cambios para redirigir utilizando el router
       //throw error;
-      if (error.status === 401) {
-        router.navigate('/login');
-      }
+      //Ya no hace falta porque tratamos las redirecciones de error con middleware
+      // if (error.status === 401) {
+      //   router.navigate('/login');
+      // }
     }
   };
 };

@@ -42,6 +42,21 @@ const thunk2 = (store) => (next) => (action) => {
   return next(action);
 };
 
+//Nuevo middelware que va gestionar las redirecciones.
+const failureRedirections =
+  (router, redirections) => (store) => (next) => (action) => {
+    const result = next(action);
+
+    if (action.error) {
+      const redirection = redirections[action.payload.status];
+      if (redirection) {
+        router.navigate(redirection);
+      }
+    }
+
+    return result;
+  };
+
 //Siempre hay que tener cuidado del orden en el que ponemos los middlewares.
 //Para nuestro logger, nos interesa que esté lo más cerca del dispatch. Por eso lo pondremos detrás del thunk
 //Ahora movemos el array de middleware dentro del configureStore para añadir el router
@@ -51,16 +66,35 @@ const thunk2 = (store) => (next) => (action) => {
 // ];
 // Añadimos un estado de precarga que inicialice es store. Esto es diferente de tener un estado por defecto, en el caso que no enviemos nada
 //La asignación la hace internamente.
+// export default function configureStore(preloadedState, { router }) {
+//   const middlewares = [
+//     thunk.withExtraArgument({ api: { auth, tweets }, router }),
+//     logger,
+//   ];
+//   const store = createStore(
+//     reducer,
+//     preloadedState,
+//     composeWithDevTools(applyMiddleware(...middlewares))
+//     // other store enhancers if any
+//   );
+
+//   return store;
+// }
+
+//Nueva configuración del store, que gestiona las redirecciones no adecuadas
 export default function configureStore(preloadedState, { router }) {
   const middlewares = [
     thunk.withExtraArgument({ api: { auth, tweets }, router }),
+    failureRedirections(router, {
+      401: '/login',
+      404: '/404',
+    }),
     logger,
   ];
   const store = createStore(
     reducer,
     preloadedState,
     composeWithDevTools(applyMiddleware(...middlewares))
-    // other store enhancers if any
   );
 
   return store;
