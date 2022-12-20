@@ -21,6 +21,8 @@ import * as reducers from './reducers'; //Esta importación devuelve un objeto c
 import * as auth from '../components/auth/service';
 import * as tweets from '../components/tweets/service';
 
+const reducer = combineReducers(reducers);
+
 //Ejemplo implementación de un middelware.
 //En este caso un middleware de información que nos enseña el estado de cada estado
 const logger = (store) => (next) => (action) => {
@@ -32,14 +34,36 @@ const logger = (store) => (next) => (action) => {
   return result;
 };
 
-const reducer = combineReducers(reducers);
-
 //Ejemplo de construcción nuestro propio thunk
-const thunk2 = (store) => (next) => (action) => {
-  if (typeof action === 'function') {
-    return action(store.dispatach, store.getState);
-  }
-  return next(action);
+// const thunk2 = (store) => (next) => (action) => {
+//   if (typeof action === 'function') {
+//     return action(store.dispatach, store.getState);
+//   }
+//   return next(action);
+// };
+
+//HighOrderFunction para el manejo de histórico de acciones de nuestro reducer
+const historyHighOrderReducer = (reducer) => {
+  return (state, action) => {
+    //Esto lo que hace es que del estado que reciba:
+    //  1- desestructura history. Si no existe, lo crea como array vacío
+    //  2- el resto del estado lo guarda en el objeto rootState
+    const { history = [], ...rootState } = state;
+
+    if (action.type === 'HISTORY_BACK') {
+      const newHistory = history.slice(0, history.length - 1);
+      return {
+        ...newHistory[newHistory.length - 1].state,
+        history: newHistory,
+      };
+    }
+
+    const newState = reducer(rootState, action);
+    return {
+      ...newState,
+      history: [...history, { action, state: newState }],
+    };
+  };
 };
 
 //Nuevo middelware que va gestionar las redirecciones.
@@ -92,7 +116,8 @@ export default function configureStore(preloadedState, { router }) {
     logger,
   ];
   const store = createStore(
-    reducer,
+    //reducer, //cambiado para el histórico
+    historyHighOrderReducer(reducer),
     preloadedState,
     composeWithDevTools(applyMiddleware(...middlewares))
   );
