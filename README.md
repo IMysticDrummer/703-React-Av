@@ -254,3 +254,12 @@ Importamos thunk de redux-thunk: `import thunk from 'redux-thunk'`
 
 Artículo interesante sobe cómo se crean e implementan los middlewares:  
 https://redux.js.org/understanding/history-and-design/middleware#understanding-middleware
+
+Artículo sobre high order reducers:  
+https://redux.js.org/usage/structuring-reducers/reusing-reducer-logic#customizing-behavior-with-higher-order-reducers
+
+Artículo sobre como implementar un undo history:  
+https://redux.js.org/usage/implementing-undo-history
+
+Artículo sobre cómo hacer enhancers para stores:  
+https://redux.js.org/usage/configuring-your-store#extending-redux-functionality

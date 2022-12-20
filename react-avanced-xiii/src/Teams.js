@@ -1,24 +1,38 @@
 //Este módulo funciona con un render llamado data loader
 
 import DataLoader from './DataLoader';
+import useData from './useData';
 //import withData from './withData';
 
 //export default function Teams() {
 //La cabecera comentada sería por high order
 //function Teams({ data: teams, style }) {
 function Teams({ style }) {
+  const {
+    data: teams,
+    isLoading,
+    error,
+  } = useData({
+    initialState: [],
+    url: 'https://www.balldontlie.io/api/v1/teams',
+  });
+
+  if (isLoading) {
+    return '...loading';
+  }
+
+  if (error) {
+    return `ooops...${error.message}`;
+  }
+
   //con render
   return (
-    <DataLoader
-      initialState={[]}
-      url='https://www.balldontlie.io/api/v1/teams'>
-      {(teams) => (
-        <ul style={style}>
-          {teams.map((team) => (
-            <li key={team.id}>{team.full_name}</li>
-          ))}
-        </ul>
-      )}
+    <DataLoader>
+      <ul style={style}>
+        {teams.map((team) => (
+          <li key={team.id}>{team.full_name}</li>
+        ))}
+      </ul>
     </DataLoader>
   );
 }
