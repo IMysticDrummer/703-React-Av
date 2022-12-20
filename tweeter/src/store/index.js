@@ -44,13 +44,18 @@ const thunk2 = (store) => (next) => (action) => {
 
 //Siempre hay que tener cuidado del orden en el que ponemos los middlewares.
 //Para nuestro logger, nos interesa que esté lo más cerca del dispatch. Por eso lo pondremos detrás del thunk
-const middlewares = [
-  thunk.withExtraArgument({ api: { auth, tweets } }),
-  logger,
-];
+//Ahora movemos el array de middleware dentro del configureStore para añadir el router
+// const middlewares = [
+//   thunk.withExtraArgument({ api: { auth, tweets } }),
+//   logger,
+// ];
 // Añadimos un estado de precarga que inicialice es store. Esto es diferente de tener un estado por defecto, en el caso que no enviemos nada
 //La asignación la hace internamente.
-export default function configureStore(preloadedState) {
+export default function configureStore(preloadedState, { router }) {
+  const middlewares = [
+    thunk.withExtraArgument({ api: { auth, tweets }, router }),
+    logger,
+  ];
   const store = createStore(
     reducer,
     preloadedState,

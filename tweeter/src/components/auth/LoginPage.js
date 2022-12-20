@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+//import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
 import FormField from '../common/FormField';
 //import { useAuth } from './context';
@@ -21,8 +21,10 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   //const [error, setError] = useState(null);
   //const [isFetching, setIsFetching] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
+
+  //Esto ya no es necesario con redirectionamiento por acción
+  //const location = useLocation();
+  //const navigate = useNavigate();
   //Con Redux, ya no hace falta
   //const { handleLogin } = useAuth();
   const dispatch = useDispatch();
@@ -34,14 +36,18 @@ const LoginPage = () => {
   //const resetError = () => setError(null);
   const handleResetError = () => dispatch(uiResetError());
 
-  const handleSubmit = async (event) => {
+  //No hace falta async con el redirectionamiento por acción, ya que no tiene que esperar a nada.
+  //const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(authLogin({ username, password })).then(() => {
-      const to = location.state?.from?.pathname || '/';
-      navigate(to, { replace: true });
-    });
     //dispatch(authLoginRequest());
+    //Esto ya no hace falta si pasamos el redirectionamiento a las acciones
+    // dispatch(authLogin({ username, password })).then(() => {
+    //   const to = location.state?.from?.pathname || '/';
+    //   navigate(to, { replace: true });
+    // });
+    dispatch(authLogin({ username, password }));
 
     /*
     try {

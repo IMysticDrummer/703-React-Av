@@ -35,7 +35,7 @@ export const authLoginFailure = (error) => ({
 //Creamos los actions creators. Uno por cada acción
 //Transformación para convertir esto en un login a través de middleware
 export const authLogin = (credentials) => {
-  return async function (dispatch, getState, { api }) {
+  return async function (dispatch, getState, { api, router }) {
     //Lógica trasladada desde loginPage
     try {
       dispatch(authLoginRequest());
@@ -43,6 +43,8 @@ export const authLogin = (credentials) => {
       //await login(credentials);
       await api.auth.login(credentials);
       dispatch(authLoginSuccess());
+      const to = router.state.location.state?.from?.pathname || '/';
+      router.navigate(to, { replace: true });
     } catch (error) {
       dispatch(authLoginFailure(error));
       throw error;
@@ -108,7 +110,7 @@ export const teewtLoadedFailure = (error) => ({
 });
 
 export const tweetLoad = (tweetId) => {
-  return async function (dispatch, getState, { api }) {
+  return async function (dispatch, getState, { api, router }) {
     const isLoaded = getTweet(tweetId)(getState());
     if (isLoaded) {
       return;
@@ -119,7 +121,11 @@ export const tweetLoad = (tweetId) => {
       dispatch(teewtLoadedSuccess(tweet));
     } catch (error) {
       dispatch(teewtLoadedFailure(error));
-      throw error;
+      //Cambios si redireccionamos desde aquí
+      //throw error;
+      if (error.status === 404) {
+        router.navigate('/404');
+      }
     }
   };
 };
@@ -143,17 +149,23 @@ export const tweetCreatedFailure = (error) => ({
 });
 
 export const tweetCreate = (tweet) => {
-  return async function (dispatch, getState, { api }) {
+  return async function (dispatch, getState, { api, router }) {
     try {
       dispatch(tweetCreatedRequest());
       const { id } = await api.tweets.createTweet(tweet);
       const createdTweet = await api.tweets.getTweetDetail(id);
       dispatch(tweetCreatedSuccess(createdTweet));
+      //Redirección con el router
+      router.navigate(`/tweets/${createdTweet.id}`);
       //devolvemos el tweet para poder utilizarlo fuera
       return createdTweet;
     } catch (error) {
       dispatch(tweetCreatedFailure(error));
-      throw error;
+      //Cambios para redirigir utilizando el router
+      //throw error;
+      if (error.status === 401) {
+        router.navigate('/login');
+      }
     }
   };
 };
