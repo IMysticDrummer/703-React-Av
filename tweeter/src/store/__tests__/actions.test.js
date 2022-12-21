@@ -1,4 +1,4 @@
-import { teewtsLoadedSuccess } from './actions';
+import { teewtsLoadedSuccess } from '../actions';
 
 describe('tweetsLoadedSuccss', () => {
   test('should return a "TWEETS_LOADED_SUCCESS" action', () => {

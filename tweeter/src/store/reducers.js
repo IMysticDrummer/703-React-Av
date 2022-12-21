@@ -43,7 +43,7 @@ import {
 //Tendremos unas funciones que tratan cada parte de nuestro store, para luego combinarlo.
 
 //Definimos nuestros reducers
-const defaultState = {
+export const defaultState = {
   auth: false,
   //tweets: [],
   tweets: {
