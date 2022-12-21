@@ -12,6 +12,12 @@ function Teams({ style }) {
     url: 'https://www.balldontlie.io/api/v1/teams',
   });
 
+  if (isLoading) {
+    return 'loading ....';
+  }
+  if (error) {
+    return `Oooops! ... ${JSON.stringify(error.message)}`;
+  }
   return (
     <ul style={style}>
       {teams.map((team) => (

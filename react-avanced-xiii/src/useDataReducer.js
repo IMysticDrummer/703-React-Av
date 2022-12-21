@@ -27,7 +27,12 @@ export default function useDataReducer({ initialState, url }) {
   useEffect(() => {
     dispatch({ type: FETCH_REQUEST });
     fetch(url)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
       .then((result) => dispatch({ type: FETCH_SUCCESS, payload: result.data }))
       .catch((error) => dispatch({ type: FETCH_FAILURE, payload: error }));
   }, [url]);
