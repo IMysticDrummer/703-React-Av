@@ -16,7 +16,7 @@ function Teams({ style }) {
     return 'loading ....';
   }
   if (error) {
-    return `Oooops! ... ${JSON.stringify(error.message)}`;
+    return `Oooops! ... ${error.message}`;
   }
   return (
     <ul style={style}>
