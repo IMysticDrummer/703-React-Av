@@ -11,7 +11,7 @@ function Teams({ style }) {
     initialState: [],
     url: 'https://www.balldontlie.io/api/v1/teams',
   });
-  console.log('el dato:', teams);
+
   return (
     <ul style={style}>
       {teams.map((team) => (
