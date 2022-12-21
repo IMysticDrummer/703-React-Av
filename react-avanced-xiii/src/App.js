@@ -7,6 +7,7 @@ function App() {
     <div className='App'>
       <Teams style={{ color: 'red' }} />
       <Players />
+      EQUIPOS HOOKEADOS
       <TeamsHook />
     </div>
   );
