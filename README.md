@@ -263,3 +263,11 @@ https://redux.js.org/usage/implementing-undo-history
 
 Artículo sobre cómo hacer enhancers para stores:  
 https://redux.js.org/usage/configuring-your-store#extending-redux-functionality
+
+Portales en React:  
+https://reactjs.org/docs/portals.html  
+https://medium.com/hackernoon/using-a-react-16-portal-to-do-something-cool-2a2d627b0202
+
+# REACT REDUX - UNIT TEST
+
+Escribiremos en Jest nuestros test unitarios. En el `create-react-app` nos viene configurado de serie.
