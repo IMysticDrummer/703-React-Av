@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginPage snapshot 1`] = `
+<div>
+  <div
+    class="loginPage"
+  >
+    <h1
+      class="loginPage-title"
+    >
+      Log in to Twitter
+    </h1>
+    <form>
+      <div
+        class="formField loginForm-field"
+      >
+        <label
+          class="formField-label"
+        >
+          <span>
+            phone, email or username
+          </span>
+          <input
+            autocomplete="off"
+            class="formField-input"
+            name="username"
+            type="text"
+            value=""
+          />
+        </label>
+      </div>
+      <div
+        class="formField loginForm-field"
+      >
+        <label
+          class="formField-label"
+        >
+          <span>
+            password
+          </span>
+          <input
+            autocomplete="off"
+            class="formField-input"
+            name="password"
+            type="password"
+            value=""
+          />
+        </label>
+      </div>
+      <button
+        class="sc-bcXHqe iYZzVz loginForm-submit"
+        disabled=""
+        type="submit"
+      >
+        Log in
+      </button>
+    </form>
+  </div>
+</div>
+`;

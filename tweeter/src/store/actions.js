@@ -47,7 +47,7 @@ export const authLogin = (credentials) => {
       router.navigate(to, { replace: true });
     } catch (error) {
       dispatch(authLoginFailure(error));
-      throw error;
+      //throw error;
     }
   };
 };

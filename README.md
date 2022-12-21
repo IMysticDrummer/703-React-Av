@@ -271,3 +271,10 @@ https://medium.com/hackernoon/using-a-react-16-portal-to-do-something-cool-2a2d6
 # REACT REDUX - UNIT TEST
 
 Escribiremos en Jest nuestros test unitarios. En el `create-react-app` nos viene configurado de serie.
+
+Para testear componentes usar la librería React Testing Library:  
+https://testing-library.com/docs/react-testing-library/intro/  
+Esta librería viene preparada dentro del `create-react-app`
+
+Antes también se utilizaba enzyme:  
+https://enzymejs.github.io/enzyme/
