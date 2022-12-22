@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TweetsPage snapshot with tweets 1`] = `
+<div>
+  <h2
+    class="layout-title bordered"
+  >
+    What's going on...
+  </h2>
+  <section
+    class="layout-content"
+  >
+    <div
+      class="tweetsPage empty"
+    >
+      <div
+        style="text-align: center;"
+      >
+        <p>
+          Be the first one!
+        </p>
+        <a
+          class="sc-bcXHqe cZfeII"
+          href="/tweets/new"
+          variant="primary"
+        >
+          Create tweet
+        </a>
+      </div>
+    </div>
+  </section>
+   
+</div>
+`;
+
+exports[`TweetsPage snapshot without tweets 1`] = `
+<div>
+  <h2
+    class="layout-title bordered"
+  >
+    What's going on...
+  </h2>
+  <section
+    class="layout-content"
+  >
+    <div
+      class="tweetsPage empty"
+    >
+      <div
+        style="text-align: center;"
+      >
+        <p>
+          Be the first one!
+        </p>
+        <a
+          class="sc-bcXHqe cZfeII"
+          href="/tweets/new"
+          variant="primary"
+        >
+          Create tweet
+        </a>
+      </div>
+    </div>
+  </section>
+   
+</div>
+`;

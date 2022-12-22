@@ -278,3 +278,5 @@ Esta librería viene preparada dentro del `create-react-app`
 
 Antes también se utilizaba enzyme:  
 https://enzymejs.github.io/enzyme/
+
+**Importante** Si queremos hacer testing por snapshot, debemos importar la librería render, pero del módulo `@testing-library/react`. Sino no funcionará.

@@ -49,7 +49,7 @@ const EmptyList = () => (
 // const TweetsPage = props => {
 //   const tweets = useTweets();
 
-const TweetsPage = ({ onTweetsLoaded, tweets, ...props }) => {
+export const TweetsPage = ({ onTweetsLoaded, tweets, ...props }) => {
   // useEffect(() => {
   //   const execute = async () => {
   //     const tweets = await getLatestTweets();
