@@ -58,7 +58,7 @@ Redux se basa en tres principios básicos:
 
 1. En un archivo indicar los tipos (types.js) de acción a realizar en el store:
 
-- Las acciones se declaran como constantes en mayúsculas, y su valor es la misma acción en texto. Ejemplo:  
+- Los tipos de acciones se declaran como constantes en mayúsculas, y su valor es la misma acción en texto. Ejemplo:  
   `export const AUTH_LOGIN_REQUEST = 'AUTH_LOGIN_REQUEST';`
 
 2. En otro archivo se declaran las acciones. Estos son funciones que retornan objetos con type (la acción a realizar según el archivo types) y, si es necesario, payload. El payload es el valor que queremos pasar al estado del store. Ejemplos:
@@ -228,3 +228,16 @@ Los parámetros son dos funciones:
 Usar redux-thunk: `npm i redux-thunk`
 Importar `applyMiddleware` en el store.  
 Importamos thunk de redux-thunk: `import thunk from 'redux-thunk'`
+
+Thunk permite pasar cosas por argumentos. Esto nos permitirá enviar, por ejemplo, funciones de manejo, routers, y otras cosas, evitando tener que llamarlas desde nuestro archivo `actions`. Esto permite también un mayor desacoplamiento de los componentes.
+Mañana podemos cambiar la forma de nuestras funciones de manejo, pero manteniendo la interfaz y nombre, no tendremos que cambiar nada más.
+
+```javascript
+const middlewares = [
+  thunk.withExtraArgument({ api: { auth, ads }, router }),
+  failureRedirections(router, {
+    401: '/login',
+    404: '/404',
+  }),
+];
+```
