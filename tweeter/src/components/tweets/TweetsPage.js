@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useState } from 'react';
+//import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getLatestTweets } from './service';
+//import { getLatestTweets } from './service';
 import classNames from 'classnames';
 
 import Tweet from './Tweet';
@@ -10,7 +10,8 @@ import styles from './TweetsPage.module.css';
 import Page from '../layout/Page';
 import Button from '../common/Button';
 //Guardar los tweets en Redux
-import { tweetsLoaded } from '../../store/actions';
+//import { tweetsLoaded } from '../../store/actions';
+import { tweetsLoad } from '../../store/actions';
 import { connect } from 'react-redux';
 import { getTweets } from '../../store/selectors';
 
@@ -49,13 +50,17 @@ const EmptyList = () => (
 //   const tweets = useTweets();
 
 const TweetsPage = ({ onTweetsLoaded, tweets, ...props }) => {
+  // useEffect(() => {
+  //   const execute = async () => {
+  //     const tweets = await getLatestTweets();
+  //     onTweetsLoaded(tweets);
+  //   };
+  //   execute();
+  // }, []);
   useEffect(() => {
-    const execute = async () => {
-      const tweets = await getLatestTweets();
-      onTweetsLoaded(tweets);
-    };
-    execute();
+    onTweetsLoaded();
   }, []);
+
   const className = classNames(styles.tweetsPage, {
     [styles.empty]: !tweets.length,
   });
@@ -95,7 +100,8 @@ const mapStateToProps = (state, ownProps) => ({
 // });
 
 const mapDispatchToProps = {
-  onTweetsLoaded: tweetsLoaded,
+  //onTweetsLoaded: tweetsLoaded,
+  onTweetsLoaded: tweetsLoad,
 };
 
 const connectedTweetsPage = connect(

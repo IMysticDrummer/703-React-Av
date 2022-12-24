@@ -7,12 +7,12 @@ export const getLatestTweets = () => {
   return client.get(url);
 };
 
-export const getTweetDetail = tweetId => {
-  const url = `${tweetsUrl}/${tweetId}`;
+export const getTweetDetail = (tweetId) => {
+  const url = `${tweetsUrl}/${tweetId}?_expand=user&_embed=likes`;
   return client.get(url);
 };
 
-export const createTweet = tweet => {
+export const createTweet = (tweet) => {
   const url = tweetsUrl;
   return client.post(url, tweet);
 };

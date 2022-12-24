@@ -145,6 +145,20 @@ export const authLoginFailure = (error) => ({
   }
   ```
 
+5. Uso del store:
+
+- Utilizaremos `useSelector` para comprobar el estado de un elemento del store de redux. Para ello hay que pasarle una función. Por ejemplo:
+
+```javascript
+const isLogged = useSelector((state) => state.auth);
+```
+
+    - Es una **buena práctica** cuando tenemos que acceder en varios sitios al mismo elemento del store, generar un archivo aparte (`selectors.js`), donde creemos funciones que nos devuelvan directamente el elemento que queremos, sin tener que escribirlo en todos los lados. De esa manera, cualquier cambio posterior que queramos hacer será mucho más centralizado.
+
+    ```javascript
+    export const getIsLogged = (state) => state.auth;
+    ```
+
 ## ACCIONES
 
 Siempre tienen que ser objetos que representan una intenciòn de cambiar el estado.
@@ -225,9 +239,30 @@ Los parámetros son dos funciones:
 
 # Middlewares
 
+Vamos a utilizar un middleware que nos va a permitir pasar no solo objetos, sino también funciones a redux.  
+Esto tendrá dos utilidades:
+
+1. Podremos pasar toda la lógica asíncrona de obtención de datos, desde los componentes a redux
+2. Aumenta la capacidad de redux de recibir, no solo objetos, sino también funciones.
+
+El middleware más utilizado es **thunk**. Thunk va a interceptar todos los _dispatch_. Si el dato introducido es un objeto, lo pasará a redux directamente. Si es una función, la ejecuta el propio thunk.  
+Thunk tiene acceso a getState y a dispatch, para poder operar con redux.
+
 Usar redux-thunk: `npm i redux-thunk`
 Importar `applyMiddleware` en el store.  
 Importamos thunk de redux-thunk: `import thunk from 'redux-thunk'`
+
+Artículo interesante sobe cómo se crean e implementan los middlewares:  
+https://redux.js.org/understanding/history-and-design/middleware#understanding-middleware
+
+Artículo sobre high order reducers:  
+https://redux.js.org/usage/structuring-reducers/reusing-reducer-logic#customizing-behavior-with-higher-order-reducers
+
+Artículo sobre como implementar un undo history:  
+https://redux.js.org/usage/implementing-undo-history
+
+Artículo sobre cómo hacer enhancers para stores:  
+https://redux.js.org/usage/configuring-your-store#extending-redux-functionality
 
 Thunk permite pasar cosas por argumentos. Esto nos permitirá enviar, por ejemplo, funciones de manejo, routers, y otras cosas, evitando tener que llamarlas desde nuestro archivo `actions`. Esto permite también un mayor desacoplamiento de los componentes.
 Mañana podemos cambiar la forma de nuestras funciones de manejo, pero manteniendo la interfaz y nombre, no tendremos que cambiar nada más.

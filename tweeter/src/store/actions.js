@@ -1,43 +1,24 @@
-import { login } from '../components/auth/service';
+//Ya no hace falta porque lo recibimos a través de thunk
+//import { login } from '../components/auth/service';
+import { areTweetsLoaded, getTweet } from './selectors';
 import {
-  AUTH_LOGIN,
+  //AUTH_LOGIN,
   AUTH_LOGOUT,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGIN_FAILURE,
   AUTH_LOGIN_REQUEST,
-  TWEETS_CREATED,
-  TWEETS_LOADED,
+  //  TWEETS_LOADED,
   UI_RESET_ERROR,
+  TWEETS_LOADED_REQUEST,
+  TWEETS_LOADED_SUCCESS,
+  TWEETS_LOADED_FAILURE,
+  TWEET_LOADED_REQUEST,
+  TWEET_LOADED_SUCCESS,
+  TWEET_LOADED_FAILURE,
+  TWEET_CREATED_REQUEST,
+  TWEET_CREATED_SUCCESS,
+  TWEET_CREATED_FAILURE,
 } from './types';
-
-//Creamos los actions creators. Uno por cada acción
-//Transformación para convertir esto en un login a través de middleware
-export const authLogin = (credentials) => {
-  return async function (dispatch, getState) {
-    //Lógica trasladada desde loginPage
-    try {
-      dispatch(authLoginRequest());
-      await login(credentials);
-      dispatch(authLoginSuccess());
-    } catch (error) {
-      dispatch(authLoginFailure(error));
-      throw error;
-    }
-  };
-};
-export const authLogout = () => ({
-  type: AUTH_LOGOUT,
-});
-//Se podría crear con una sola función y un solo type, pero es mejor ser descriptivo con las acciones
-// const auth = (auth) => ({
-//   type: AUTH,
-//   payload: auth
-// });
-
-export const tweetsLoaded = (tweets) => ({
-  type: TWEETS_LOADED,
-  payload: tweets,
-});
 
 export const authLoginSuccess = () => ({
   type: AUTH_LOGIN_SUCCESS,
@@ -50,6 +31,146 @@ export const authLoginFailure = (error) => ({
   payload: error,
   error: true,
 });
+
+//Creamos los actions creators. Uno por cada acción
+//Transformación para convertir esto en un login a través de middleware
+export const authLogin = (credentials) => {
+  return async function (dispatch, getState, { api, router }) {
+    //Lógica trasladada desde loginPage
+    try {
+      dispatch(authLoginRequest());
+      //Anulamos lo siguiente ya que ahora lo recibimos por extra arguments a través del thunk
+      //await login(credentials);
+      await api.auth.login(credentials);
+      dispatch(authLoginSuccess());
+      const to = router.state.location.state?.from?.pathname || '/';
+      router.navigate(to, { replace: true });
+    } catch (error) {
+      dispatch(authLoginFailure(error));
+      throw error;
+    }
+  };
+};
+export const authLogoutSuccess = () => ({
+  type: AUTH_LOGOUT,
+});
+//Se podría crear con una sola función y un solo type, pero es mejor ser descriptivo con las acciones
+// const auth = (auth) => ({
+//   type: AUTH,
+//   payload: auth
+// });
+
+export const authLogout = () => {
+  return async function (dispatch, getState, { api }) {
+    await api.auth.logout();
+    dispatch(authLogoutSuccess());
+  };
+};
+
+export const teewtsLoadedRequest = () => ({
+  type: TWEETS_LOADED_REQUEST,
+});
+export const teewtsLoadedSuccess = (tweets) => ({
+  type: TWEETS_LOADED_SUCCESS,
+  payload: tweets,
+});
+export const teewtsLoadedFailure = (error) => ({
+  type: TWEETS_LOADED_FAILURE,
+  payload: error,
+  error: true,
+});
+export const tweetsLoad = () => {
+  return async function (dispatch, getState, { api }) {
+    const areLoaded = areTweetsLoaded(getState());
+    if (areLoaded) {
+      return;
+    }
+    try {
+      dispatch(teewtsLoadedRequest());
+      const tweets = await api.tweets.getLatestTweets();
+      dispatch(teewtsLoadedSuccess(tweets));
+    } catch (error) {
+      dispatch(teewtsLoadedFailure(error));
+      throw error;
+    }
+  };
+};
+
+export const teewtLoadedRequest = () => ({
+  type: TWEET_LOADED_REQUEST,
+});
+export const teewtLoadedSuccess = (tweet) => ({
+  type: TWEET_LOADED_SUCCESS,
+  payload: tweet,
+});
+export const teewtLoadedFailure = (error) => ({
+  type: TWEET_LOADED_FAILURE,
+  payload: error,
+  error: true,
+});
+
+export const tweetLoad = (tweetId) => {
+  return async function (dispatch, getState, { api, router }) {
+    const isLoaded = getTweet(tweetId)(getState());
+    if (isLoaded) {
+      return;
+    }
+    try {
+      dispatch(teewtLoadedRequest());
+      const tweet = await api.tweets.getTweetDetail(tweetId);
+      dispatch(teewtLoadedSuccess(tweet));
+    } catch (error) {
+      dispatch(teewtLoadedFailure(error));
+      //Cambios si redireccionamos desde aquí
+      //throw error;
+      //Ya no hace falta porque tratamos las redirecciones de error con middleware
+      // if (error.status === 404) {
+      //   router.navigate('/404');
+      // }
+    }
+  };
+};
+
+// export const tweetsLoaded = (tweets) => ({
+//   type: TWEETS_LOADED,
+//   payload: tweets,
+// });
+
+export const tweetCreatedRequest = () => ({
+  type: TWEET_CREATED_REQUEST,
+});
+export const tweetCreatedSuccess = (tweet) => ({
+  type: TWEET_CREATED_SUCCESS,
+  payload: tweet,
+});
+export const tweetCreatedFailure = (error) => ({
+  type: TWEET_CREATED_FAILURE,
+  payload: error,
+  error: true,
+});
+
+export const tweetCreate = (tweet) => {
+  return async function (dispatch, getState, { api, router }) {
+    try {
+      dispatch(tweetCreatedRequest());
+      const { id } = await api.tweets.createTweet(tweet);
+      const createdTweet = await api.tweets.getTweetDetail(id);
+      dispatch(tweetCreatedSuccess(createdTweet));
+      //Redirección con el router
+      router.navigate(`/tweets/${createdTweet.id}`);
+      //devolvemos el tweet para poder utilizarlo fuera
+      return createdTweet;
+    } catch (error) {
+      dispatch(tweetCreatedFailure(error));
+      //Cambios para redirigir utilizando el router
+      //throw error;
+      //Ya no hace falta porque tratamos las redirecciones de error con middleware
+      // if (error.status === 401) {
+      //   router.navigate('/login');
+      // }
+    }
+  };
+};
 
 export const uiResetError = () => ({
   type: UI_RESET_ERROR,
